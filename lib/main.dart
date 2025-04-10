@@ -4,10 +4,8 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget { 
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,51 +14,124 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Device Flutter'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
+  const MyHomePage({super.key});
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String imagem = "images/brenda.jpg";
+  int _saldo = 0;
 
-  void _incrementCounter() {
+  void enviar() {
     setState(() {
-      _counter++;
+      if (imagem == "images/brenda.jpg") {
+        imagem = "images/logoTec.png";
+      } else {
+        imagem = "images/brenda.jpg";
+      }
+    });
+  }
+
+  void saldoenviar() {
+    setState(() {
+      _saldo++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor:Color(0xFF3E4C59),
-        title: Text(widget.title, style: TextStyle(color: Colors.white),),
-        centerTitle: true,
-        actions: [
-          Padding(padding: EdgeInsets.only(left: 10, right: 10), 
-          child: Text("$_counter", style: TextStyle(fontSize: 20,color: Colors.white),
-        ),)],
+      backgroundColor: Color(0xFF0D1B2A),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              child: CircleAvatar(
+                radius: 50,
+                foregroundImage: AssetImage(imagem),
+              ),
+              onTap: () {
+                print("clicol");
+              },
+            ),
+            Text(
+              "Geovana Silva",
+              style: TextStyle(
+                fontSize: 40,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Pacifico",
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              "ENGENHEIRA DE HARDWARE",
+              style: TextStyle(
+                color: Colors.deepOrange.shade100,
+                fontFamily: "PatuaOne",
+                letterSpacing: 2.5,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              padding: EdgeInsets.all(10),
+              color: Colors.white,
+              child: Row(
+                children: [
+                  Icon(Icons.phone, color: Color(0xFF0D1B2A), size: 25),
+                  SizedBox(width: 10),
+                  Text(
+                    "+55 28999324531",
+                    style: TextStyle(
+                      color: Color(0xFF0D1B2A),
+                      fontFamily: "PatuaOne",
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              padding: EdgeInsets.all(10),
+              color: Colors.white,
+              child: Row(
+                children: [
+                  Icon(Icons.email, color: Color(0xFF0D1B2A), size: 25),
+                  SizedBox(width: 10),
+                  Text(
+                    "geovanasilva@gmail.com",
+                    style: TextStyle(
+                      color: Color(0xFF0D1B2A),
+                      fontFamily: "PatuaOne",
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                enviar();
+              },
+              child: Text("Entrar", style: TextStyle(color: Colors.white)),
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(Colors.blueAccent),
+                minimumSize: WidgetStateProperty.all<Size>(Size(310, 40)),
+              ),
+            ),
+          ],
+        ),
       ),
-      backgroundColor: Color(0xFF1F1F2E),
-      body:Center(child:Image(image:AssetImage("images/images-removebg-preview.png"),),),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        backgroundColor: Color(0xFF00BFA6),
-        splashColor: Color(0xFF00BFA6),
-        foregroundColor: Colors.white,
-        tooltip: 'Contador',
-        child: const Icon(Icons.add),
-      ), 
     );
   }
 }
