@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -27,110 +30,59 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String imagem = "images/brenda.jpg";
-  int _saldo = 0;
 
-  void enviar() {
-    setState(() {
-      if (imagem == "images/brenda.jpg") {
-        imagem = "images/logoTec.png";
-      } else {
-        imagem = "images/brenda.jpg";
-      }
-    });
-  }
+  Future<dynamic> requestApi() async {
+    var url = Uri.parse("https://jsonplaceholder.typicode.com/todos/1");
 
-  void saldoenviar() {
-    setState(() {
-      _saldo++;
-    });
+    var response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      var json_decoder = jsonDecode(response.body);
+      return json_decoder;
+    } else {
+      throw Exception("Erro ao com servidor");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF0D1B2A),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              child: CircleAvatar(
-                radius: 50,
-                foregroundImage: AssetImage(imagem),
-              ),
-              onTap: () {
-                print("clicol");
-              },
-            ),
-            Text(
-              "Geovana Silva",
-              style: TextStyle(
-                fontSize: 40,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Pacifico",
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              "ENGENHEIRA DE HARDWARE",
-              style: TextStyle(
-                color: Colors.deepOrange.shade100,
-                fontFamily: "PatuaOne",
-                letterSpacing: 2.5,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-              padding: EdgeInsets.all(10),
-              color: Colors.white,
-              child: Row(
-                children: [
-                  Icon(Icons.phone, color: Color(0xFF0D1B2A), size: 25),
-                  SizedBox(width: 10),
-                  Text(
-                    "+55 28999324531",
-                    style: TextStyle(
-                      color: Color(0xFF0D1B2A),
-                      fontFamily: "PatuaOne",
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-              padding: EdgeInsets.all(10),
-              color: Colors.white,
-              child: Row(
-                children: [
-                  Icon(Icons.email, color: Color(0xFF0D1B2A), size: 25),
-                  SizedBox(width: 10),
-                  Text(
-                    "geovanasilva@gmail.com",
-                    style: TextStyle(
-                      color: Color(0xFF0D1B2A),
-                      fontFamily: "PatuaOne",
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                enviar();
-              },
-              child: Text("Entrar", style: TextStyle(color: Colors.white)),
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(Colors.blueAccent),
-                minimumSize: WidgetStateProperty.all<Size>(Size(310, 40)),
-              ),
-            ),
-          ],
+      appBar: AppBar(
+        title: Text(
+          "New Bank",
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: "PatuaOne",
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        backgroundColor: Color.fromARGB(52, 5, 1, 1),
+        actions: [
+          CircleAvatar(
+            foregroundImage: NetworkImage(
+              "https://static1.purepeople.com.br/articles/9/22/72/39/@/2616689-flavia-pavanelli-e-brenda-na-novela-as-580x0-3.jpg",
+            ),
+          ),
+          SizedBox(width: 10),
+        ],
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 1,
+                height: MediaQuery.of(context).size.width * 0.50,
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          print(requestApi());
+        },
       ),
     );
   }
