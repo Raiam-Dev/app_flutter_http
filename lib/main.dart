@@ -1,6 +1,8 @@
 import 'package:app_http/Mapper/mapper_json.dart';
 import 'package:flutter/material.dart';
 import 'functionsApi/api_teste.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -28,13 +30,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String imagem = "images/brenda.jpg";
+  int dadoEsquerdo = 1;
+  int dadoDireito = 1;
   User? result;
+
   void carregarApi() async {
     User resultado = await requestApi();
     setState(() {
       result = resultado;
     });
+  }
+
+  void gerarDados() {
+    dadoDireito = Random().nextInt(6) + 1;
+    dadoEsquerdo = Random().nextInt(6) + 1;
   }
 
   @override
@@ -43,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Color(0xFF0D1B2A),
       appBar: AppBar(
         title: Text(
-          "New Bank",
+          "Jogo Dado",
           style: TextStyle(
             color: Colors.white,
             fontFamily: "PatuaOne",
@@ -54,46 +63,92 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           CircleAvatar(
             foregroundImage: NetworkImage(
-              "https://static1.purepeople.com.br/articles/9/22/72/39/@/2616689-flavia-pavanelli-e-brenda-na-novela-as-580x0-3.jpg",
+              "https://wallpapers.com/images/featured-full/instagram-logo-vector-png-ir8f58dvmxlfkgac.png",
             ),
           ),
           SizedBox(width: 10),
         ],
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 1,
-                height: MediaQuery.of(context).size.width * 0.50,
-                color: Colors.blueGrey,
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      foregroundImage: NetworkImage(
-                        "https://static1.purepeople.com.br/articles/9/22/72/39/@/2616689-flavia-pavanelli-e-brenda-na-novela-as-580x0-3.jpg",
-                      ),
-                    ),
-                    result == null
-                        ? Text('')
-                        : Text(
-                          '${result!.title}',
-                          style: TextStyle(color: Colors.white),
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+            result != null
+                ? Card(
+                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  color: const Color.fromARGB(255, 26, 29, 31),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ListTile(
+                          leading: Icon(
+                            Icons.message,
+                            color: Colors.greenAccent,
+                          ),
+                          title:
+                              result == null
+                                  ? Text(
+                                    'Details:',
+                                    style: TextStyle(color: Colors.white),
+                                  )
+                                  : Text(
+                                    'Details: ${result!.title}',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                         ),
-                  ],
+                      ],
+                    ),
+                  ),
+                )
+                : Center(
+                  child: Text(
+                    "Atualizar",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-            ],
-          ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        gerarDados();
+                      });
+                    },
+                    child: Image.asset("images/dado$dadoEsquerdo.png"),
+                  ),
+                ),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        gerarDados();
+                      });
+                    },
+                    child: Image.asset("images/dado$dadoDireito.png"),
+                  ),
+                ),
+              ],
+            ),
+            TextButton(
+              onPressed: () {
+                final player = AudioPlayer();
+                player.setSource(AssetSource('music/nota1.wav'));
+              },
+              child: Text("Clique"),
+            ),
+          ],
         ),
       ),
+
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.restart_alt_outlined),
         backgroundColor: Colors.blueAccent,
         onPressed: () {
           carregarApi();
         },
+        child: Icon(Icons.restart_alt_outlined),
       ),
     );
   }
