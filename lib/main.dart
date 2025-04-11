@@ -1,7 +1,6 @@
-import 'dart:convert';
-
+import 'package:app_http/Mapper/mapper_json.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'functionsApi/api_teste.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,18 +29,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String imagem = "images/brenda.jpg";
-
-  Future<dynamic> requestApi() async {
-    var url = Uri.parse("https://jsonplaceholder.typicode.com/todos/1");
-
-    var response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      var json_decoder = jsonDecode(response.body);
-      return json_decoder;
-    } else {
-      throw Exception("Erro ao com servidor");
-    }
+  User? result;
+  void carregarApi() async {
+    User resultado = await requestApi();
+    setState(() {
+      result = resultado;
+    });
   }
 
   @override
@@ -74,14 +67,32 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 width: MediaQuery.of(context).size.width * 1,
                 height: MediaQuery.of(context).size.width * 0.50,
+                color: Colors.blueGrey,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      foregroundImage: NetworkImage(
+                        "https://static1.purepeople.com.br/articles/9/22/72/39/@/2616689-flavia-pavanelli-e-brenda-na-novela-as-580x0-3.jpg",
+                      ),
+                    ),
+                    result == null
+                        ? Text('')
+                        : Text(
+                          '${result!.title}',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                  ],
+                ),
               ),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          print(requestApi());
+        child: Icon(Icons.restart_alt_outlined),
+        backgroundColor: Colors.blueAccent,
+        onPressed: () {
+          carregarApi();
         },
       ),
     );
