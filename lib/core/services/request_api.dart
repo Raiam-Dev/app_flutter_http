@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:app_http/Mapper/mapper_json.dart';
+import 'package:app_http/data/models/mapper_json.dart';
 import 'package:http/http.dart' as http;
 
 Future<User> requestApi() async {
