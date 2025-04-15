@@ -58,9 +58,7 @@ class _BodyTesteState extends State<BodyTeste> {
                               ),
                             ),
                             onPressed: () {
-                              publicar(
-                                '''{nome:Raiam,idade: 12,cidade:cachoeiro}''',
-                              );
+                              publicar();
                             },
                             child: Icon(Icons.publish_sharp),
                           ),
