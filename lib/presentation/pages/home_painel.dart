@@ -1,17 +1,17 @@
-import 'package:app_http/cores/cores_globais.dart';
-import 'package:app_http/utils/callback_publicar.dart';
-import 'package:app_http/utils/mqtt_connection.dart';
-import 'package:app_http/utils/variaveis_globais/variaveis_globais.dart';
+import 'package:app_http/core/constants/cores_globais.dart';
+import 'package:app_http/core/utils/callback_publicar.dart';
+import 'package:app_http/core/utils/mqtt_connection.dart';
+import 'package:app_http/core/globals/variaveis_globais.dart';
 import 'package:flutter/material.dart';
 
-class BodyHome extends StatefulWidget {
-  const BodyHome({super.key});
+class HomePainel extends StatefulWidget {
+  const HomePainel({super.key});
 
   @override
-  State<BodyHome> createState() => _BodyTesteState();
+  State<HomePainel> createState() => _BodyTesteState();
 }
 
-class _BodyTesteState extends State<BodyHome> {
+class _BodyTesteState extends State<HomePainel> {
   @override
   Widget build(BuildContext context) {
     return Column(

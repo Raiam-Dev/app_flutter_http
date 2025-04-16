@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:app_http/utils/callback_onConnect.dart';
-import 'package:app_http/utils/callback_onDisconnect.dart';
-import 'package:app_http/utils/variaveis_globais/variaveis_globais.dart';
+import 'package:app_http/core/utils/callback_onConnect.dart';
+import 'package:app_http/core/utils/callback_onDisconnect.dart';
+import 'package:app_http/core/globals/variaveis_globais.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 

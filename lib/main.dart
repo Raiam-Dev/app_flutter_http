@@ -1,8 +1,9 @@
-import 'package:app_http/cores/cores_globais.dart';
-import 'package:app_http/utils/callback_disconnect.dart';
-import 'package:app_http/utils/mqtt_connection.dart';
-import 'package:app_http/utils/variaveis_globais/variaveis_globais.dart';
-import 'package:app_http/widgets/body_teste.dart';
+import 'package:app_http/core/constants/cores_globais.dart';
+import 'package:app_http/core/utils/callback_disconnect.dart';
+import 'package:app_http/core/utils/mqtt_connection.dart';
+import 'package:app_http/core/globals/variaveis_globais.dart';
+import 'package:app_http/presentation/pages/home_login.dart';
+import 'package:app_http/presentation/pages/home_painel.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
@@ -17,7 +18,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(),
+      routes: <String, WidgetBuilder>{
+        'HomePainel': (BuildContext context) => MyHomePage(),
+        '/': (BuildContext context) => HomeLogin(),
+      },
     );
   }
 }
@@ -62,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
         ],
       ),
-      body: BodyHome(),
+      body: HomePainel(),
     );
   }
 }
