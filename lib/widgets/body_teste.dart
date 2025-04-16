@@ -1,116 +1,101 @@
-import 'package:app_http/utils/callback_disconnect.dart';
+import 'package:app_http/cores/cores_globais.dart';
 import 'package:app_http/utils/callback_publicar.dart';
 import 'package:app_http/utils/mqtt_connection.dart';
+import 'package:app_http/utils/variaveis_globais/variaveis_globais.dart';
 import 'package:flutter/material.dart';
 
-bool conectado = false;
-
-class BodyTeste extends StatefulWidget {
-  const BodyTeste({super.key});
+class BodyHome extends StatefulWidget {
+  const BodyHome({super.key});
 
   @override
-  State<BodyTeste> createState() => _BodyTesteState();
+  State<BodyHome> createState() => _BodyTesteState();
 }
 
-class _BodyTesteState extends State<BodyTeste> {
+class _BodyTesteState extends State<BodyHome> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          SizedBox(
-            width: 500,
-            height: 200,
-            child: Card(
-              color: Colors.blueGrey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      children: [
+        Row(
+          children: [
+            TextButton(
+              onPressed: () async {
+                conectando = true;
+                setState(() {});
+                await conectar();
+                setState(() {
+                  conectando = false;
+                });
+              },
+              style: TextButton.styleFrom(overlayColor: transparent),
+              child: SizedBox(
+                width: 100,
+                height: 100,
+                child: Card(
+                  color: Colors.white,
+                  elevation: 5,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color:
-                                conectado == true
-                                    ? const Color.fromARGB(255, 0, 255, 8)
-                                    : const Color.fromARGB(255, 243, 16, 0),
-                          ),
-                          width: 15,
-                          height: 15,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: SizedBox(
-                          width: 150,
-                          height: 35,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(
-                                255,
-                                255,
-                                255,
-                                255,
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5, top: 5),
+                            child: Container(
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: conectado == true ? green : red,
                               ),
                             ),
-                            onPressed: () {
-                              publicar();
-                            },
-                            child: Icon(Icons.publish_sharp),
                           ),
-                        ),
+                        ],
+                      ),
+                      conectando == false
+                          ? Icon(Icons.connect_without_contact, size: 40)
+                          : CircularProgressIndicator(),
+                      Text(
+                        "Connect",
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        width: 150,
-                        height: 25,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              255,
-                              255,
-                              255,
-                            ),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              disconnect();
-                            });
-                          },
-                          child: Text("Desconectar"),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 150,
-                        height: 25,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.greenAccent,
-                          ),
-                          onPressed: () async {
-                            await conectar();
-                            setState(() {});
-                          },
-                          child: Text("Conectar"),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
+
+            TextButton(
+              onPressed: () {
+                if (conectado == true) {
+                  publicar();
+                } else {}
+              },
+              style: TextButton.styleFrom(overlayColor: transparent),
+              child: SizedBox(
+                width: 100,
+                height: 100,
+                child: Card(
+                  color: Colors.white,
+                  elevation: 5,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      conectado == false
+                          ? Icon(Icons.block_flipped, size: 40)
+                          : Icon(Icons.publish_outlined, size: 40),
+                      Text(
+                        "publish",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
