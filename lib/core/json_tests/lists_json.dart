@@ -1,0 +1,30 @@
+List jsonData = [
+  {
+    'title': 'Bomba Hidráulica',
+    'port': 12,
+    'value': 1,
+    'topic': 'request/device/port/12',
+    'horario': null,
+  },
+  {
+    'title': 'Motor',
+    'port': 13,
+    'value': 1,
+    'topic': 'request/device/port/13',
+    'horario': null,
+  },
+  {
+    'title': 'Lampada Escritorio',
+    'port': 22,
+    'value': 1,
+    'topic': 'request/device/port/22',
+    'horario': null,
+  },
+  {
+    'title': 'Servidor',
+    'port': 33,
+    'value': 1,
+    'topic': 'request/device/port/33',
+    'horario': null,
+  },
+];

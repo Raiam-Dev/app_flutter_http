@@ -1,7 +1,5 @@
-import 'package:app_http/core/constants/cores_globais.dart';
-import 'package:app_http/core/utils/callback_publicar.dart';
-import 'package:app_http/core/utils/mqtt_connection.dart';
-import 'package:app_http/core/globals/variaveis_globais.dart';
+import 'package:app_http/core/json_tests/lists_json.dart';
+import 'package:app_http/core/utils/mqttCallbacks/callback_publicar.dart';
 import 'package:flutter/material.dart';
 
 class HomePainel extends StatefulWidget {
@@ -14,88 +12,29 @@ class HomePainel extends StatefulWidget {
 class _BodyTesteState extends State<HomePainel> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            TextButton(
-              onPressed: () async {
-                conectando = true;
-                setState(() {});
-                await conectar();
-                setState(() {
-                  conectando = false;
-                });
-              },
-              style: TextButton.styleFrom(overlayColor: transparent),
-              child: SizedBox(
-                width: 100,
-                height: 100,
-                child: Card(
-                  color: Colors.white,
-                  elevation: 5,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 5, top: 5),
-                            child: Container(
-                              width: 10,
-                              height: 10,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: conectado == true ? green : red,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      conectando == false
-                          ? Icon(Icons.connect_without_contact, size: 40)
-                          : CircularProgressIndicator(),
-                      Text(
-                        "Connect",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-
-            TextButton(
+    return ListView.separated(
+      itemCount: jsonData.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Card(
+          child: ListTile(
+            title: Text("${jsonData[index]['title']}"),
+            subtitle: Text("${jsonData[index]['topic']}"),
+            trailing: TextButton(
               onPressed: () {
-                if (conectado == true) {
-                  publicar();
-                } else {}
+                jsonData[index]['horario'] = DateTime.now().toString();
+                publicar(
+                  jsonData[index]['value'],
+                  jsonData[index]['port'],
+                  jsonData[index]['topic'],
+                  jsonData[index]['horario'],
+                );
               },
-              style: TextButton.styleFrom(overlayColor: transparent),
-              child: SizedBox(
-                width: 100,
-                height: 100,
-                child: Card(
-                  color: Colors.white,
-                  elevation: 5,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      conectado == false
-                          ? Icon(Icons.block_flipped, size: 40)
-                          : Icon(Icons.publish_outlined, size: 40),
-                      Text(
-                        "publish",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              child: Icon(Icons.send),
             ),
-          ],
-        ),
-      ],
+          ),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 }
