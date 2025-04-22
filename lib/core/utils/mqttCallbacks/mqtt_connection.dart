@@ -4,9 +4,11 @@ import 'package:app_http/core/utils/mqttCallbacks/callback_onDisconnect.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
-final client = MqttServerClient('192.168.11.124', 'raiam');
+String serverMqtt = '';
+final client = MqttServerClient(serverMqtt, 'raiam');
 
-Future<void> conectar() async {
+Future<bool> conectar(String server, int porta) async {
+  serverMqtt = server;
   client.logging(on: false);
   client.setProtocolV311();
   client.keepAlivePeriod = 60;
@@ -15,26 +17,26 @@ Future<void> conectar() async {
     conectado.value = true;
   };
   client.autoReconnect = false;
-  client.port = 1884;
+  client.port = porta;
 
   client.onDisconnected = onDisconnected;
   client.onConnected = onConnected;
 
   try {
-    conectado.value = !conectado.value;
+    await Future.delayed(const Duration(seconds: 2));
     await client.connect();
-    conectado.value = !conectado.value;
 
     if (client.connectionStatus!.state == MqttConnectionState.connected) {
-      return;
+      return false;
     } else {
       client.disconnect();
       print('Deconectado');
       conectado.value = !conectado.value;
-      return;
+      return true;
     }
   } catch (erro) {
     print(erro);
   }
   ;
+  return false;
 }

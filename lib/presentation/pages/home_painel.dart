@@ -1,5 +1,7 @@
+import 'dart:convert';
+
+import 'package:app_http/core/globals/variaveis_globais.dart';
 import 'package:app_http/core/json_tests/lists_json.dart';
-import 'package:app_http/core/utils/mqttCallbacks/callback_publicar.dart';
 import 'package:flutter/material.dart';
 
 class HomePainel extends StatefulWidget {
@@ -12,29 +14,56 @@ class HomePainel extends StatefulWidget {
 class _BodyTesteState extends State<HomePainel> {
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return GridView.builder(
       itemCount: jsonData.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Card(
-          child: ListTile(
-            title: Text("${jsonData[index]['title']}"),
-            subtitle: Text("${jsonData[index]['topic']}"),
-            trailing: TextButton(
-              onPressed: () {
-                jsonData[index]['horario'] = DateTime.now().toString();
-                publicar(
-                  jsonData[index]['value'],
-                  jsonData[index]['port'],
-                  jsonData[index]['topic'],
-                  jsonData[index]['horario'],
-                );
-              },
-              child: Icon(Icons.send),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+      ),
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          onTap: () {
+            print(index);
+          },
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 5, left: 5),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.height * 0.03,
+                            height: MediaQuery.of(context).size.width * 0.03,
+                            child: ValueListenableBuilder(
+                              valueListenable: conectado,
+                              builder: (context, conectado, _) {
+                                return conectado == false
+                                    ? Card(color: Colors.red)
+                                    : Card(color: Colors.greenAccent);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text("${jsonData[index]['port']}"),
+                    Center(
+                      child: Text(
+                        "${jsonData[index]['title']}",
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         );
       },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 }

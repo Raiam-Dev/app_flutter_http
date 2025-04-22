@@ -1,4 +1,4 @@
-import 'package:app_http/presentation/pages/homeConfig.dart';
+import 'package:app_http/presentation/pages/homeConfigMqtt.dart';
 import 'package:app_http/presentation/pages/home_painel.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +9,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(brightness: Brightness.dark, useMaterial3: true),
       debugShowCheckedModeBanner: false,
       routes: {
         "/": (BuildContext context) => Homeconfig(),
@@ -29,13 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "MQTT ESP-32",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        actions: [],
-      ),
+      appBar: AppBar(backgroundColor: Colors.deepOrange),
       body: SafeArea(child: HomePainel()),
     );
   }
