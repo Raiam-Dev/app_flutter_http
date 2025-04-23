@@ -1,4 +1,5 @@
 import 'package:app_http/core/utils/mqttCallbacks/mqtt_connection.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Homeconfig extends StatefulWidget {
@@ -50,6 +51,13 @@ class _HomeconfigState extends State<Homeconfig> {
                     backgroundColor: Colors.deepOrange,
                   ),
                   onPressed: () async {
+                    CollectionReference firebaseBanco = FirebaseFirestore
+                        .instance
+                        .collection('Json_Esp32');
+                    firebaseBanco.add({
+                      'server': _controllerServer.text,
+                      'porta': _controllerPorta.text,
+                    });
                     _carregar.value = !_carregar.value;
                     bool response = await conectar(
                       _controllerServer.text,
